@@ -1,0 +1,13 @@
+namespace: mateothegreat
+name: prometheus
+version: 0.0.1
+readme: README.md
+authors:
+  - Matthew Davis (https://matthewdavis.io)
+description: "Install & configure prometheus."
+license: ["MIT"]
+license_file: COPYING
+tags: ["monitoring", "prometheus"]
+repository: https://github.com/mateothegreat/prometheus.git
+homepage: https://github.com/mateothegreat/prometheus
+issues: https://github.com/mateothegreat/prometheus/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc

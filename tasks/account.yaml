@@ -1,0 +1,13 @@
+- name: "Create prometheus group"
+  become: "true"
+  group:
+    name: "{{ prometheus.group }}"
+    state: "present"
+
+- name: "Create prometheus user"
+  become: "true"
+  user:
+    name: "{{ prometheus.user }}"
+    group: "{{ prometheus.group }}"
+    shell: "/bin/false"
+    create_home: "no"

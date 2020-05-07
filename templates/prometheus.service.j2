@@ -1,0 +1,13 @@
+[Unit]
+Description=Prometheus
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+User={{ prometheus.user | default('prometheus') }}
+Group={{ prometheus.group | default('prometheus')  }}
+ExecStart={{ prometheus.install_path | default('/usr/local/bin')  }}/prometheus --config.file={{ prometheus.config_dir | default('/etc/prometheus')  }}/prometheus.yaml --web.listen-address={{ prometheus.listen_address | default('0.0.0.0:9090')  }} --storage.tsdb.path={{ prometheus.tsdb.path | default('/var/lib/prometheus') }} --storage.tsdb.retention.time={{ prometheus.tsdb.retention_time | default('15d') }} --storage.tsdb.retention.size={{ prometheus.tsdb.retention_size | default('1GB') }}
+
+[Install]
+WantedBy=multi-user.target

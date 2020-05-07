@@ -1,0 +1,69 @@
+- name: "Download & unpack prometheus"
+  unarchive:
+    src: "https://github.com/prometheus/prometheus/releases/download/v{{ prometheus.version }}/prometheus-{{ prometheus.version }}.linux-amd64.tar.gz"
+    dest: "/tmp"
+    remote_src: "yes"
+  register: unarchive_result
+
+- name: "Install prometheus binary"
+  become: "true"
+  copy:
+    src: "/tmp/prometheus-{{ prometheus.version }}.linux-amd64/prometheus"
+    dest: "{{ prometheus.install_path | default('/usr/local/bin') }}/prometheus"
+    mode: "0555"
+    remote_src: "yes"
+    force: "yes"
+
+- name: "Install promtool binary"
+  become: "true"
+  copy:
+    src: "/tmp/prometheus-{{ prometheus.version }}.linux-amd64/promtool"
+    dest: "{{ prometheus.install_path | default('/usr/local/bin') }}//promtool"
+    mode: "0555"
+    remote_src: "yes"
+    force: "yes"
+
+- name: "Create directories"
+  become: "true"
+  file:
+    path: "{{ item }}"
+    state: "directory"
+    mode: "0770"
+    owner: "prometheus"
+    group: "prometheus"
+  with_items:
+    - "{{ prometheus.config_dir | default('/etc/prometheus') }}"
+    - "{{ prometheus.tsdb_path | default('/var/lib/prometheus') }}"
+
+- name: "Install prometheus.yaml"
+  become: "true"
+  template:
+    src: "prometheus.yaml.j2"
+    dest: "{{ prometheus.config_dir | default('/etc/prometheus') }}/prometheus.yaml"
+    mode: "0600"
+    owner: "{{ prometheus.user | default('prometheus') }}"
+    group: "{{ prometheus.group | default('prometheus') }}"
+    force: "yes"
+
+- name: "Install prometheus.service"
+  become: "true"
+  template:
+    src: "prometheus.service.j2"
+    dest: "/etc/systemd/system/prometheus.service"
+    mode: "0600"
+    force: "yes"
+
+- name: "Start prometheus.service"
+  become: "true"
+  systemd:
+    name: "prometheus"
+    enabled: "yes"
+    daemon_reload: "yes"
+    state: "restarted"
+
+- name: "Remove tmp files"
+  file:
+    path: "{{ item }}"
+    state: "absent"
+  loop:
+    - "/tmp/prometheus-{{ prometheus.version }}.linux-amd64"

@@ -1,0 +1,15 @@
+#
+# Ansible managed
+#
+# http://prometheus.io/docs/operating/configuration/
+#
+global:
+  evaluation_interval: {{ prometheus.evaluation_interval }}
+  scrape_interval: {{ prometheus.scrape_interval }}
+  scrape_timeout: {{ prometheus.scrape_timeout }}
+  external_labels: {{ prometheus.external_labels }}
+
+rule_files:
+  - /etc/prometheus/rules/*.rules
+
+scrape_configs: {{ prometheus.scrape_configs }}
