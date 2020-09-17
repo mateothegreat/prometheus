@@ -12,6 +12,8 @@ prometheus:
   group: "prometheus"
   scrape_interval: "15s"
   scrape_timeout: "10s"
+  alertmanagers:
+    - "localhost:9093"
   external_labels:
     environment: "production"
   scrape_configs:

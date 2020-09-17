@@ -1,0 +1,8 @@
+- name: "Install rules from {{ prometheus.rules_path }}"
+  become: "true"
+  copy:
+    src: "{{ prometheus.rules_path }}"
+    dest: "/etc/prometheus"
+    owner: "prometheus"
+    group: "prometheus"
+    mode: "0660"

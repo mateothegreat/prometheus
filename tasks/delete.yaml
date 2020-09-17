@@ -1,0 +1,5 @@
+- name: "Delete /etc/prometheus"
+  become: "true"
+  file:
+    path: "/etc/prometheus"
+    state: "absent"

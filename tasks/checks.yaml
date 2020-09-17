@@ -1,0 +1,5 @@
+- name: "Check if prometheus is accessible"
+  uri:
+    url: "http://{{ prometheus.listen_address }}"
+    method: "GET"
+    status_code: "200"

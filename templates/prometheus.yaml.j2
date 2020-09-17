@@ -9,7 +9,13 @@ global:
   scrape_timeout: {{ prometheus.scrape_timeout }}
   external_labels: {{ prometheus.external_labels }}
 
-rule_files:
-  - /etc/prometheus/rules/*.rules
-
 scrape_configs: {{ prometheus.scrape_configs }}
+
+rule_files:
+  - /etc/prometheus/rules/*.yaml
+
+alerting:
+  alertmanagers:
+    - scheme: http
+      static_configs:
+        - targets: {{ prometheus.alertmanagers | from_yaml }}
