@@ -15,7 +15,4 @@ rule_files:
   - /etc/prometheus/rules/*.yaml
 
 alerting:
-  alertmanagers:
-    - scheme: http
-      static_configs:
-        - targets: {{ prometheus.alertmanagers | from_yaml }}
+  alertmanagers: {{ prometheus.alertmanagers | from_yaml }}
